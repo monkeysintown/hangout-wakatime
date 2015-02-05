@@ -20,6 +20,7 @@
     <Content type="html"><![CDATA[
 <html>
 <head>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 <style>
 body {
     color: #ffffff;
@@ -33,6 +34,7 @@ body {
 
 <script src="//plus.google.com/hangouts/_/api/v1/hangout.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.11/angular.min.js"></script>
 
 
 <h3>Wakatime Hangout</h3>

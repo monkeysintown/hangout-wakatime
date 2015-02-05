@@ -14,7 +14,7 @@ gulp.task('merge', function () {
     //.pipe($.inject(gulp.src(['./gadget/**/*.js', './gadget/**/*.css'], {read: false})))
 
     return gulp.src('./gadget/wakatime.xml')
-        .pipe($.replace(/<link href="(.*\.css)"[^>]*>/g, function(s, filename) {
+        .pipe($.replace(/<link href="(wakatime\.css)"[^>]*>/g, function(s, filename) {
             var style = fs.readFileSync('./gadget/styles/' + filename, 'utf8');
             return '<style>\n' + style + '\n</style>';
         }))

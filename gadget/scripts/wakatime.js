@@ -1,86 +1,139 @@
-/* global gapi, gadgets, $ */
+/* global angular, gapi, gadgets, moment, $ */
 
-var logoUrl = 'https://wakatime.com/static/img/wakatime-white-120.png';
-var overlayEffect = null;
+(function() {
+    'use strict';
 
-function sendHeartbeat(file, time, project, language, isWrite, lines) {
-    // TODO
-}
+    angular.module('wakatime', ['ngCookies']).config(function ($rootScope) {
+        // Wait for gadget to load.
+        gadgets.util.registerOnLoadHandler(function() {
+            gapi.hangout.onApiReady.add(
+                function(e) {
+                    $rootScope.$broadcast('hangout.ready', e);
+                });
+        });
+    }).controller('WakatimeCtrl', function ($scope, $http, Hangout) {
+        $scope.edit = true;
+        $scope.running = false;
+        $scope.logo = 'https://avatars2.githubusercontent.com/u/4814844?v=3&s=200';
 
-function createTextOverlay(string) {
-    // Create a canvas to draw on
-    var canvas = document.createElement('canvas');
-    canvas.setAttribute('width', 166);
-    canvas.setAttribute('height', 100);
+        $scope.start = function() {
+            Hangout.start();
+        };
 
-    var context = canvas.getContext('2d');
+        $scope.stop = function() {
+            Hangout.stop();
+        };
 
-    // Draw background
-    //context.fillStyle = '#BBB';
-    //context.fillRect(0,0,166,50);
+        $scope.reset = function() {
+            Hangout.reset();
+        };
 
-    // Draw text
-    context.font = '16pt Impact';
-    context.lineWidth = 6;
-    context.lineStyle = '#000';
-    context.fillStyle = '#FFF';
-    context.textAlign = 'center';
-    context.textBaseline = 'bottom';
-    context.strokeText(string, canvas.width / 2, canvas.height / 2);
-    context.fillText(string, canvas.width / 2, canvas.height / 2);
-
-    return canvas.toDataURL();
-}
-
-function showOverlay() {
-    var options = {
-        'scale': {
-            'magnitude': 0.5,
-            'reference': gapi.hangout.av.effects.ScaleReference.WIDTH
-        }
-    };
-    //var overlayImage = gapi.hangout.av.effects.createImageResource(logoUrl);
-    var overlayImage = gapi.hangout.av.effects.createImageResource(createTextOverlay('Time: 00:00:23'));
-    overlayEffect = overlayImage.createOverlay(options);
-    overlayEffect.setPosition(-0.5, 0.45);
-    overlayEffect.setVisible(true);
-}
-
-function startApp() {
-    gapi.hangout.onair.onYouTubeLiveIdReady.add(
-        function(eventObject) {
+        $scope.$watch('showLogo', function(newValue, oldValue) {
+            Hangout.showLogo(newValue);
         });
 
-    gapi.hangout.onParticipantsChanged.add(
-        function(eventObject) {
-        });
-
-    gapi.hangout.onair.onBroadcastingChanged.add(
-        function(eventObject) {
-        });
-
-    gapi.hangout.onair.onNewParticipantInBroadcastChanged.add(
-        function(eventObject) {
-        });
-
-    gapi.hangout.onTopicChanged.add(
-        function(eventObject) {
-        });
-
-    gapi.hangout.onTopicChanged.add(
-        function(eventObject) {
-        });
-
-}
-
-function init() {
-    // When API is ready...
-    gapi.hangout.onApiReady.add(
-        function(eventObj) {
+        $scope.sendHeartbeat = function(file, time, project, language, isWrite, lines) {
             // TODO
-            showOverlay();
-        });
-}
+        };
+    }).factory('Hangout', function ($rootScope, $interval) {
+        var overlays = {};
+        var watch;
+        var time = 0;
 
-// Wait for gadget to load.
-gadgets.util.registerOnLoadHandler(init);
+        function createTextOverlay(string) {
+            // Create a canvas to draw on
+            var canvas = document.createElement('canvas');
+            canvas.setAttribute('width', 166);
+            canvas.setAttribute('height', 100);
+
+            var context = canvas.getContext('2d');
+
+            // Draw text
+            context.font = '16pt Impact';
+            context.lineWidth = 6;
+            context.lineStyle = '#000';
+            context.fillStyle = '#FFF';
+            context.textAlign = 'center';
+            context.textBaseline = 'bottom';
+            context.strokeText(string, canvas.width / 2, canvas.height / 2);
+            context.fillText(string, canvas.width / 2, canvas.height / 2);
+
+            return canvas.toDataURL();
+        }
+
+        var Hangout = {
+            init: function() {
+                gapi.hangout.onParticipantsChanged.add(
+                    function(e) {
+                        $rootScope.$broadcast('hangout.participant', e);
+                    });
+
+                gapi.hangout.onair.onBroadcastingChanged.add(
+                    function(e) {
+                        $rootScope.$broadcast('hangout.broadcasting', e);
+                    });
+
+                gapi.hangout.onair.onNewParticipantInBroadcastChanged.add(
+                    function(e) {
+                    });
+
+                gapi.hangout.onTopicChanged.add(
+                    function(e) {
+                        $rootScope.$broadcast('hangout.topic', e);
+                    });
+            },
+            start: function() {
+                if(watch) {
+                    return;
+                } else {
+                    watch = $interval(function() {
+                        time += 5000;
+                        Hangout.setTime(moment(time).format('HH:mm:ss'));
+                    }, 5000)
+                }
+            },
+            stop: function() {
+                if(watch) {
+                    $interval.cancel(watch);
+                    watch = undefined;
+                }
+            },
+            reset: function() {
+                time = 0;
+            },
+            setTime: function(time) {
+                if(overlays['time']) {
+                    overlays['time'].dispose();
+                }
+                overlays['time'] = gapi.hangout.av.effects.createImageResource(createTextOverlay(time));
+                overlays['time'] = overlays['time'].createOverlay({
+                    'scale': {
+                        'magnitude': 0.5,
+                        'reference': gapi.hangout.av.effects.ScaleReference.WIDTH
+                    }
+                });
+                overlays['time'].setPosition(-0.5, 0.45);
+                overlays['time'].setVisible(true);
+            },
+            showLogo: function(show) {
+                if(!overlays['logo']) {
+                    overlays['logo'] = gapi.hangout.av.effects.createImageResource('https://avatars2.githubusercontent.com/u/4814844?v=3&s=200');
+                    overlays['logo'] = overlays['logo'].createOverlay({
+                        'scale': {
+                            'magnitude': 0.5,
+                            'reference': gapi.hangout.av.effects.ScaleReference.WIDTH
+                        }
+                    });
+                    overlays['logo'].setPosition(0.5, 0.45);
+                }
+                overlays['logo'].setVisible(show);
+            }
+        };
+
+        $rootScope.$on('hangout.ready', function(e) {
+            Hangout.init();
+        });
+
+        return Hangout;
+    });
+})();

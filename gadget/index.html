@@ -1,6 +1,22 @@
-<h3>Wakatime Hangout</h3>
-
-<form>
-    <label>API Key</label>
-    <input id="api_key" name="api_key">
+<form class="form-inline">
+    <div class="form-group">
+        <img src="https://avatars2.githubusercontent.com/u/4814844?v=3&s=200">
+    </div>
+    <div class="form-group">
+        <input id="api_key" name="api_key" ng-model="apiKey" placeholder="API Key">
+    </div>
+    <div class="form-group">
+        <input id="project" name="project" ng-model="project" placeholder="Project">
+    </div>
+    <div class="form-group">
+        <input type="checkbox" ng-model="showLogo">
+    </div>
+    <div class="form-group">
+        <div class="btn-group">
+            <button class="btn btn-success" ng-click="start()" ng-hide="running" type="button">Start</button>
+            <button class="btn btn-danger" ng-click="stop()" ng-show="running" type="button">Stop</button>
+            <button class="btn btn-default" ng-click="reset()" type="button">Reset</button>
+        </div>
+    </div>
 </form>
+
