@@ -19,67 +19,21 @@
     </ModulePrefs>
     <Content type="html"><![CDATA[
 <html>
+<head>
+<link href="wakatime.css" />
+<!-- inject:css -->
+<!-- endinject -->
+</head>
 <body>
+
 <script src="//plus.google.com/hangouts/_/api/v1/hangout.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 
-<h3>Wakatime</h3>
+<include src="index.html" />
 
-<script>
-
-var logoUrl = 'https://wakatime.com/static/img/wakatime-white-120.png';
-var overlayEffect = null;
-
-function sendHeartbeat(file, time, project, language, isWrite, lines) {
-    // TODO
-}
-
-function showOverlay() {
-    var options = {};
-    var overlayImage = gapi.hangout.av.effects.createImageResource(logoUrl);
-    overlayEffect = overlayImage.createOverlay(options);
-    overlayEffect.setVisible(true);
-}
-
-function startApp() {
-  gapi.hangout.onair.onYouTubeLiveIdReady.add(
-      function(eventObject) {
-      });
-
-  gapi.hangout.onParticipantsChanged.add(
-      function(eventObject) {
-  });
-
-  gapi.hangout.onair.onBroadcastingChanged.add(
-      function(eventObject) {
-      });
-
-  gapi.hangout.onair.onNewParticipantInBroadcastChanged.add(
-      function(eventObject) {
-      });
-
-  gapi.hangout.onTopicChanged.add(
-      function(eventObject) {
-      });
-
-  gapi.hangout.onTopicChanged.add(
-      function(eventObject) {
-      });
-
-}
-
-function init() {
-  // When API is ready...
-  gapi.hangout.onApiReady.add(
-      function(eventObj) {
-        // TODO
-        showOverlay();
-      });
-}
-
-// Wait for gadget to load.
-gadgets.util.registerOnLoadHandler(init);
-</script>
+<script src="wakatime.js" />
+<!-- inject:js -->
+<!-- endinject -->
 </body>
 ]]>
     </Content>
