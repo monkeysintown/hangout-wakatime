@@ -16,16 +16,16 @@ function createTextOverlay(string) {
     var context = canvas.getContext('2d');
 
     // Draw background
-    context.fillStyle = '#BBB';
-    context.fillRect(0,0,166,50);
+    //context.fillStyle = '#BBB';
+    //context.fillRect(0,0,166,50);
 
     // Draw text
     context.font = '16pt Impact';
     context.lineWidth = 6;
     context.lineStyle = '#000';
     context.fillStyle = '#FFF';
-    context.textAlign = 'center';
-    context.textBaseline = 'bottom';
+    context.textAlign = 'left';
+    context.textBaseline = 'top';
     context.strokeText(string, canvas.width / 2, canvas.height / 2);
     context.fillText(string, canvas.width / 2, canvas.height / 2);
 
