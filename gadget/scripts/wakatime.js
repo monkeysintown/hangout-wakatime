@@ -24,8 +24,6 @@ function createTextOverlay(string) {
     context.lineWidth = 6;
     context.lineStyle = '#000';
     context.fillStyle = '#FFF';
-    context.fillColor = '#ffff00';
-    context.fillColor = '#ffff00';
     context.textAlign = 'center';
     context.textBaseline = 'bottom';
     context.strokeText(string, canvas.width / 2, canvas.height / 2);
@@ -35,10 +33,16 @@ function createTextOverlay(string) {
 }
 
 function showOverlay() {
-    var options = {};
+    var options = {
+        'scale': {
+            'magnitude': 0.5,
+            'reference': gapi.hangout.av.effects.ScaleReference.WIDTH
+        }
+    };
     //var overlayImage = gapi.hangout.av.effects.createImageResource(logoUrl);
     var overlayImage = gapi.hangout.av.effects.createImageResource(createTextOverlay('Time: 00:00:23'));
     overlayEffect = overlayImage.createOverlay(options);
+    overlayEffect.setPosition(0, 0.45);
     overlayEffect.setVisible(true);
 }
 
