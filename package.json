@@ -1,0 +1,46 @@
+{
+  "name": "hangout-wakatime",
+  "version": "0.1.0",
+  "description": "Wakatime for Google Hangouts",
+  "homepage": "https://monkeysintown.github.io/hangout-wakatime",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/monkeysintown/hangout-wakatime"
+  },
+  "author": {
+    "name": "Monkeys in Town Lda.",
+    "email": "office.lisbon@monkeysintown.com",
+    "url": "https://monkeysintown.github.io"
+  },
+  "files": [
+    "addon"
+  ],
+  "bugs": {
+    "url": "https://github.com/monkeysintown/hangout-wakatime/issues"
+  },
+  "readme": "README.md",
+  "dependencies": {},
+  "devDependencies": {
+    "del": "^1.1.1",
+    "gulp": "^3.8.10",
+    "gulp-buffer": "^0.0.2",
+    "gulp-filter": "^2.0.0",
+    "gulp-flatten": "^0.0.4",
+    "gulp-if": "^1.2.5",
+    "gulp-jshint": "^1.9.2",
+    "gulp-load-plugins": "^0.8.0",
+    "gulp-replace": "^0.5.2",
+    "gulp-size": "^1.2.0",
+    "gulp-strip-debug": "^1.0.2",
+    "gulp-util": "^3.0.3",
+    "gulp-zip": "^2.0.2",
+    "merge-stream": "^0.1.7",
+    "readable-stream": "^1.0.33",
+    "request": "^2.53.0",
+    "through2": "^0.6.3",
+    "vinyl-paths": "^1.0.0"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  }
+}
