@@ -24,8 +24,8 @@ function createTextOverlay(string) {
     context.lineWidth = 6;
     context.lineStyle = '#000';
     context.fillStyle = '#FFF';
-    context.textAlign = 'left';
-    context.textBaseline = 'top';
+    context.textAlign = 'center';
+    context.textBaseline = 'bottom';
     context.strokeText(string, canvas.width / 2, canvas.height / 2);
     context.fillText(string, canvas.width / 2, canvas.height / 2);
 
@@ -42,7 +42,7 @@ function showOverlay() {
     //var overlayImage = gapi.hangout.av.effects.createImageResource(logoUrl);
     var overlayImage = gapi.hangout.av.effects.createImageResource(createTextOverlay('Time: 00:00:23'));
     overlayEffect = overlayImage.createOverlay(options);
-    overlayEffect.setPosition(0, 0.45);
+    overlayEffect.setPosition(-0.5, 0.45);
     overlayEffect.setVisible(true);
 }
 
