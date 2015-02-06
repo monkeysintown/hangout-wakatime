@@ -38,7 +38,7 @@
         var Hangout = {
             data: {
                 initialized: false,
-                apiKey: '',
+                apiKey: undefined,
                 project: 'Unknown Calls',
                 language: 'Call',
                 is_write: true,
@@ -61,7 +61,7 @@
                 gapi.hangout.onTopicChanged.add(
                     function(evt) {
                         $log.info(evt);
-                        Hangout.start();
+                        //Hangout.data.topic = evt.topic
                         $rootScope.$broadcast('hangout.topic', evt);
                     });
 
@@ -76,6 +76,7 @@
                         time += 5000;
                         Hangout.setTime(moment.utc(time).format('HH:mm:ss'));
                         $rootScope.$broadcast('timer', time);
+                        Hangout.sendHeartbeat(Date.now());
                     }, 5000);
                     $rootScope.$broadcast('timer.started', time);
                 }
@@ -121,24 +122,30 @@
                 }
                 overlays['logo'].setVisible(show);
             },
-            sendHeartbeat: function(file, time, project) {
-                return $http({
-                    method: 'POST',
-                    url: API_URL,
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Basic ' + btoa(Hangout.data.apiKey)
-                    },
-                    data: JSON.stringify({
-                        time: time/1000,
-                        file: file,
-                        project: project,
-                        language: Hangout.data.language,
-                        is_write: Hangout.data.is_write,
-                        lines: Hangout.data.lines,
-                        plugin: PLUGIN
-                    })
-                });
+            sendHeartbeat: function(time) {
+                if(Hangout.data.apiKey) {
+                    $http({
+                        method: 'POST',
+                        url: API_URL,
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Basic ' + btoa(Hangout.data.apiKey)
+                        },
+                        data: JSON.stringify({
+                            time: time/1000,
+                            file: Hangout.data.topic,
+                            project: Hangout.data.project,
+                            language: Hangout.data.language,
+                            is_write: Hangout.data.is_write,
+                            lines: Hangout.data.lines,
+                            plugin: PLUGIN
+                        })
+                    }).success(function(data) {
+                        $log.info(data);
+                    }).error(function(data) {
+                        $log.info(data);
+                    });
+                }
             }
         };
 
