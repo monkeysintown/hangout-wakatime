@@ -127,11 +127,12 @@
                     $http({
                         method: 'POST',
                         url: API_URL,
+                        mimeType: 'application/json',
                         headers: {
                             'Content-Type': 'application/json',
                             'Authorization': 'Basic ' + btoa(Hangout.data.apiKey)
                         },
-                        data: JSON.stringify({
+                        data: {
                             time: time/1000,
                             file: Hangout.data.topic,
                             project: Hangout.data.project,
@@ -139,7 +140,7 @@
                             is_write: Hangout.data.is_write,
                             lines: Hangout.data.lines,
                             plugin: PLUGIN
-                        })
+                        }
                     }).success(function(data) {
                         $log.info(data);
                     }).error(function(data) {
