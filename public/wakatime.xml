@@ -37,7 +37,7 @@
 
 <form class="form-inline">
     <div class="form-group">
-        <img src="https://avatars2.githubusercontent.com/u/4814844?v=3&s=200">
+        <img src="https://raw.githubusercontent.com/monkeysintown/hangout-wakatime/master/gadget/images/logo.png">
     </div>
     <div class="form-group">
         <input id="api_key" name="api_key" ng-model="apiKey" placeholder="API Key">
@@ -68,6 +68,7 @@
 
     var API_URL = 'https://wakatime.com/api/v1/actions';
     var PLUGIN = 'hangout-wakatime/0.1.0';
+    var LOGO = 'https://raw.githubusercontent.com/monkeysintown/hangout-wakatime/master/gadget/images/logo.png';
 
     var app = angular.module('wakatime', []);
 
@@ -110,22 +111,26 @@
                 $log.info('Init called...');
 
                 gapi.hangout.onParticipantsChanged.add(
-                    function(e) {
-                        $rootScope.$broadcast('hangout.participant', e);
-                        $log.info(angular.toJSON(e));
+                    function(evt) {
+                        $log.info(evt);
+                        $rootScope.$broadcast('hangout.participant', evt);
+                        $log.info(angular.toJSON(evt));
                     });
 
                 gapi.hangout.onair.onBroadcastingChanged.add(
-                    function(e) {
-                        $rootScope.$broadcast('hangout.broadcasting', e);
-                        $log.info(angular.toJSON(e));
+                    function(evt) {
+                        $log.info(evt);
                         Hangout.start();
+                        $rootScope.$broadcast('hangout.broadcasting', evt);
+                        $log.info(angular.toJSON(evt));
                     });
 
                 gapi.hangout.onTopicChanged.add(
-                    function(e) {
-                        $rootScope.$broadcast('hangout.topic', e);
-                        $log.info(angular.toJSON(e));
+                    function(evt) {
+                        $log.info(evt);
+                        Hangout.start();
+                        $rootScope.$broadcast('hangout.topic', evt);
+                        $log.info(angular.toJSON(evt));
                     });
 
                 this.data.initialized = true;
@@ -169,14 +174,14 @@
             },
             showLogo: function(show) {
                 if(!overlays['logo']) {
-                    overlays['logo'] = gapi.hangout.av.effects.createImageResource('https://avatars2.githubusercontent.com/u/4814844?v=3&s=200');
+                    overlays['logo'] = gapi.hangout.av.effects.createImageResource(LOGO);
                     overlays['logo'] = overlays['logo'].createOverlay({
                         'scale': {
-                            'magnitude': 0.5,
+                            'magnitude': 0.4,
                             'reference': gapi.hangout.av.effects.ScaleReference.WIDTH
                         }
                     });
-                    overlays['logo'].setPosition(0.5, 0.45);
+                    overlays['logo'].setPosition(-0.4, -0.1);
                 }
                 overlays['logo'].setVisible(show);
             },
@@ -221,14 +226,16 @@
     app.controller('WakatimeCtrl', function ($scope, $http, Hangout) {
         $scope.edit = true;
         $scope.running = false;
-        $scope.logo = 'https://avatars2.githubusercontent.com/u/4814844?v=3&s=200';
+        $scope.logo = LOGO;
 
         $scope.start = function() {
             Hangout.start();
+            $scope.running = true;
         };
 
         $scope.stop = function() {
             Hangout.stop();
+            $scope.running = false;
         };
 
         $scope.reset = function() {
