@@ -45,8 +45,6 @@
                 lines: 1
             },
             init: function() {
-                $log.info('Init called...');
-
                 gapi.hangout.onParticipantsChanged.add(
                     function(evt) {
                         $log.info(evt);
@@ -73,19 +71,20 @@
                 if(watch) {
                     return;
                 } else {
-                    Hangout.setTime(moment(time).format('HH:mm:ss'));
+                    Hangout.setTime(moment.utc(time).format('HH:mm:ss'));
                     watch = $interval(function() {
                         time += 5000;
-                        Hangout.setTime(moment(time).format('HH:mm:ss'));
+                        Hangout.setTime(moment.utc(time).format('HH:mm:ss'));
+                        $rootScope.$broadcast('timer', time);
                     }, 5000)
-                    $rootScope.$broadcast('timer.started');
+                    $rootScope.$broadcast('timer.started', time);
                 }
             },
             stop: function() {
                 if(watch) {
                     $interval.cancel(watch);
                     watch = undefined;
-                    $rootScope.$broadcast('timer.stopped');
+                    $rootScope.$broadcast('timer.stopped', time);
                 }
             },
             reset: function() {
