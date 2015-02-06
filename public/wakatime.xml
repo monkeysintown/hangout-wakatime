@@ -40,13 +40,13 @@
         <img src="https://raw.githubusercontent.com/monkeysintown/hangout-wakatime/master/gadget/images/logo.png">
     </div>
     <div class="form-group">
-        <input id="api_key" name="api_key" ng-model="apiKey" placeholder="API Key">
+        <input class="form-control" id="api_key" name="api_key" ng-model="apiKey" placeholder="API Key">
     </div>
     <div class="form-group">
-        <input id="project" name="project" ng-model="project" placeholder="Project">
+        <input class="form-control" id="project" name="project" ng-model="project" placeholder="Project">
     </div>
     <div class="form-group">
-        <input type="checkbox" ng-model="showLogo">
+        <input class="form-control" type="checkbox" ng-model="showLogo">
     </div>
     <div class="form-group">
         <div class="btn-group">
@@ -56,7 +56,7 @@
         </div>
     </div>
     <div class="form-group">
-        <table class="table.table-condensed">
+        <table class="table table-condensed">
             <tr ng-repeat="entry in queue">
                 <td>{{entry}}</td>
             </tr>
@@ -183,11 +183,11 @@
                     overlays['logo'] = gapi.hangout.av.effects.createImageResource(LOGO);
                     overlays['logo'] = overlays['logo'].createOverlay({
                         'scale': {
-                            'magnitude': 0.4,
+                            'magnitude': 0.1,
                             'reference': gapi.hangout.av.effects.ScaleReference.WIDTH
                         }
                     });
-                    overlays['logo'].setPosition(-0.4, -0.1);
+                    overlays['logo'].setPosition(-0.3, -0.1);
                 }
                 overlays['logo'].setVisible(show);
             },

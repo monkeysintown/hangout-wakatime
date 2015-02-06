@@ -113,11 +113,11 @@
                     overlays['logo'] = gapi.hangout.av.effects.createImageResource(LOGO);
                     overlays['logo'] = overlays['logo'].createOverlay({
                         'scale': {
-                            'magnitude': 0.4,
+                            'magnitude': 0.1,
                             'reference': gapi.hangout.av.effects.ScaleReference.WIDTH
                         }
                     });
-                    overlays['logo'].setPosition(-0.4, -0.1);
+                    overlays['logo'].setPosition(-0.3, -0.1);
                 }
                 overlays['logo'].setVisible(show);
             },
