@@ -3,7 +3,47 @@
 (function() {
     'use strict';
 
-    angular.module('wakatime', ['ngCookies']).factory('Hangout', function ($rootScope, $interval) {
+    var module = angular.module('wakatime', ['ngCookies']);
+
+    module.config(function (Hangout) {
+        // Wait for gadget to load.
+        gadgets.util.registerOnLoadHandler(function() {
+            gapi.hangout.onApiReady.add(
+                function(e) {
+                    Hangout.init();
+                });
+        });
+    }).run(function() {
+        // you can inject any instance here
+    });
+
+    module.controller('WakatimeCtrl', function ($scope, $http, Hangout) {
+        $scope.edit = true;
+        $scope.running = false;
+        $scope.logo = 'https://avatars2.githubusercontent.com/u/4814844?v=3&s=200';
+
+        $scope.start = function() {
+            Hangout.start();
+        };
+
+        $scope.stop = function() {
+            Hangout.stop();
+        };
+
+        $scope.reset = function() {
+            Hangout.reset();
+        };
+
+        $scope.$watch('showLogo', function(newValue, oldValue) {
+            Hangout.showLogo(newValue);
+        });
+
+        $scope.sendHeartbeat = function(file, time, project, language, isWrite, lines) {
+            // TODO
+        };
+    });
+
+    module.factory('Hangout', function ($rootScope$interval) {
         var overlays = {};
         var watch;
         var time = 0;
@@ -99,39 +139,5 @@
         };
 
         return Hangout;
-    }).controller('WakatimeCtrl', function ($scope, $http, Hangout) {
-        $scope.edit = true;
-        $scope.running = false;
-        $scope.logo = 'https://avatars2.githubusercontent.com/u/4814844?v=3&s=200';
-
-        $scope.start = function() {
-            Hangout.start();
-        };
-
-        $scope.stop = function() {
-            Hangout.stop();
-        };
-
-        $scope.reset = function() {
-            Hangout.reset();
-        };
-
-        $scope.$watch('showLogo', function(newValue, oldValue) {
-            Hangout.showLogo(newValue);
-        });
-
-        $scope.sendHeartbeat = function(file, time, project, language, isWrite, lines) {
-            // TODO
-        };
-    }).config(function (Hangout) {
-        // Wait for gadget to load.
-        gadgets.util.registerOnLoadHandler(function() {
-            gapi.hangout.onApiReady.add(
-                function(e) {
-                    Hangout.init();
-                });
-        });
-    }).run(function($rootScope) {
-        // you can inject any instance here
     });
 })();
