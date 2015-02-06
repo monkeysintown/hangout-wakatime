@@ -117,7 +117,7 @@
                             'reference': gapi.hangout.av.effects.ScaleReference.WIDTH
                         }
                     });
-                    overlays['logo'].setPosition(-0.5, -0.1);
+                    overlays['logo'].setPosition(-0.4, -0.2);
                 }
                 overlays['logo'].setVisible(show);
             },
