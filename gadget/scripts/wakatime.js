@@ -62,6 +62,7 @@
                 gapi.hangout.onair.onBroadcastingChanged.add(
                     function(evt) {
                         $log.info(evt);
+                        Hangout.showLogo(true);
                         Hangout.start();
                         $rootScope.$broadcast('hangout.broadcasting', evt);
                     });
@@ -108,7 +109,7 @@
                         'reference': gapi.hangout.av.effects.ScaleReference.WIDTH
                     }
                 });
-                overlay.setPosition(-0.4, -0.4);
+                overlay.setPosition(-0.4, -0.1);
                 overlay.setVisible(true);
 
                 if(overlays['time']) {
@@ -126,7 +127,7 @@
                             'reference': gapi.hangout.av.effects.ScaleReference.WIDTH
                         }
                     });
-                    overlays['logo'].setPosition(-0.4, -0.2);
+                    overlays['logo'].setPosition(-0.4, -0.3);
                 }
                 overlays['logo'].setVisible(show);
             },
