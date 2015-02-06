@@ -45,9 +45,11 @@
     <div class="form-group">
         <input class="form-control" id="project" name="project" ng-model="project" placeholder="Project">
     </div>
+    <!--
     <div class="form-group">
         <input class="form-control" type="checkbox" ng-model="showLogo">
     </div>
+    -->
     <div class="form-group">
         <div class="btn-group">
             <button class="btn btn-success" ng-click="start()" ng-hide="running" type="button">Start</button>
@@ -57,9 +59,16 @@
     </div>
     <div class="form-group">
         <table class="table table-condensed">
-            <tr ng-repeat="entry in queue">
-                <td>{{entry}}</td>
-            </tr>
+            <thead>
+                <tr>
+                    <h4>Debug Events</h4>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="entry in queue">
+                    <td>{{entry}}</td>
+                </tr>
+            </tbody>
         </table>
     </div>
 </form>
@@ -142,6 +151,8 @@
                         //Hangout.data.topic = evt.topic
                         $rootScope.$broadcast('hangout.topic', evt);
                     });
+
+                Hangout.showLogo(true);
 
                 this.data.initialized = true;
             },
