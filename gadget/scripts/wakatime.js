@@ -5,7 +5,7 @@
 
     var app = angular.module('wakatime', []);
 
-    app.factory('Hangout', function ($rootScope$interval) {
+    app.factory('Hangout', function ($rootScope, $interval) {
         var overlays = {};
         var watch;
         var time = 0;
