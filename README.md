@@ -32,3 +32,7 @@ widget list (dev category).
 
 The URL that I am using points to the raw Github file (https://raw.../wakatime.xml). This is just for testing. Ultimately
 it should be hosted on a proper server.
+
+### Links
+
+- https://hangouts-io13.appspot.com/
