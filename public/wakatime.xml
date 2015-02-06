@@ -141,6 +141,7 @@
                 gapi.hangout.onair.onBroadcastingChanged.add(
                     function(evt) {
                         $log.info(evt);
+                        Hangout.showLogo(true);
                         Hangout.start();
                         $rootScope.$broadcast('hangout.broadcasting', evt);
                     });
@@ -151,8 +152,6 @@
                         //Hangout.data.topic = evt.topic
                         $rootScope.$broadcast('hangout.topic', evt);
                     });
-
-                Hangout.showLogo(true);
 
                 this.data.initialized = true;
             },
