@@ -30,8 +30,7 @@
 <script src="//plus.google.com/hangouts/_/api/v1/hangout.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.11/angular.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.11/angular-cookies.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.11/angular.min.js"></script>
 
 <include src="index.html" />
 

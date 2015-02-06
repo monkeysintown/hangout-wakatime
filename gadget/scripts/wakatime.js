@@ -56,6 +56,7 @@
                 if(watch) {
                     return;
                 } else {
+                    Hangout.setTime(moment(time).format('HH:mm:ss'));
                     watch = $interval(function() {
                         time += 5000;
                         Hangout.setTime(moment(time).format('HH:mm:ss'));
@@ -72,18 +73,21 @@
                 time = 0;
             },
             setTime: function(time) {
-                if(overlays['time']) {
-                    overlays['time'].dispose();
-                }
-                overlays['time'] = gapi.hangout.av.effects.createImageResource(createTextOverlay(time));
-                overlays['time'] = overlays['time'].createOverlay({
+                var overlay = gapi.hangout.av.effects.createImageResource(createTextOverlay(time));
+                overlay = overlay.createOverlay({
                     'scale': {
-                        'magnitude': 0.5,
+                        'magnitude': 0.4,
                         'reference': gapi.hangout.av.effects.ScaleReference.WIDTH
                     }
                 });
-                overlays['time'].setPosition(-0.5, 0.45);
-                overlays['time'].setVisible(true);
+                overlay.setPosition(-0.5, 0.5);
+                overlay.setVisible(true);
+
+                if(overlays['time']) {
+                    overlays['time'].dispose();
+                }
+
+                overlays['time'] = overlay;
             },
             showLogo: function(show) {
                 if(!overlays['logo']) {
