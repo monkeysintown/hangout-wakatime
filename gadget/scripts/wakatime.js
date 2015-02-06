@@ -3,12 +3,12 @@
 (function() {
     'use strict';
 
-    angular.module('wakatime', ['ngCookies']).config(function ($rootScope) {
+    angular.module('wakatime', ['ngCookies']).config(function (Hangout) {
         // Wait for gadget to load.
         gadgets.util.registerOnLoadHandler(function() {
             gapi.hangout.onApiReady.add(
                 function(e) {
-                    $rootScope.$broadcast('hangout.ready', e);
+                    Hangout.init();
                 });
         });
     }).controller('WakatimeCtrl', function ($scope, $http, Hangout) {
@@ -131,10 +131,6 @@
                 overlays['logo'].setVisible(show);
             }
         };
-
-        $rootScope.$on('hangout.ready', function(e) {
-            Hangout.init();
-        });
 
         return Hangout;
     });
