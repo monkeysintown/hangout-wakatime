@@ -36,6 +36,7 @@
 
         var Hangout = {
             data: {
+                initialized: false,
                 apiKey: '',
                 project: 'Unknown Calls',
                 language: 'Call',
@@ -43,6 +44,8 @@
                 lines: 1
             },
             init: function() {
+                $log.info('Init called...');
+
                 gapi.hangout.onParticipantsChanged.add(
                     function(e) {
                         $rootScope.$broadcast('hangout.participant', e);
@@ -61,6 +64,8 @@
                         $rootScope.$broadcast('hangout.topic', e);
                         $log.info(angular.toJSON(e));
                     });
+
+                this.data.initialized = true;
             },
             start: function() {
                 if(watch) {
@@ -137,9 +142,15 @@
         gadgets.util.registerOnLoadHandler(function() {
             gapi.hangout.onApiReady.add(
                 function(e) {
-                    Hangout.init();
+                    if(!Hangout.data.initialized) {
+                        Hangout.init();
+                    }
                 });
         });
+
+        if(!Hangout.data.initialized) {
+            Hangout.init();
+        }
 
         return Hangout;
     });
