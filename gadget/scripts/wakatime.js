@@ -3,9 +3,12 @@
 (function() {
     'use strict';
 
+    var API_URL = 'https://wakatime.com/api/v1/actions';
+    var PLUGIN = 'hangout-wakatime/0.1.0';
+
     var app = angular.module('wakatime', []);
 
-    app.factory('Hangout', function ($rootScope, $interval) {
+    app.factory('Hangout', function ($rootScope, $interval, $http, $log) {
         var overlays = {};
         var watch;
         var time = 0;
@@ -32,24 +35,31 @@
         }
 
         var Hangout = {
+            data: {
+                apiKey: '',
+                project: 'Unknown Calls',
+                language: 'Call',
+                is_write: true,
+                lines: 1
+            },
             init: function() {
                 gapi.hangout.onParticipantsChanged.add(
                     function(e) {
                         $rootScope.$broadcast('hangout.participant', e);
+                        $log.info(angular.toJSON(e));
                     });
 
                 gapi.hangout.onair.onBroadcastingChanged.add(
                     function(e) {
                         $rootScope.$broadcast('hangout.broadcasting', e);
-                    });
-
-                gapi.hangout.onair.onNewParticipantInBroadcastChanged.add(
-                    function(e) {
+                        $log.info(angular.toJSON(e));
+                        Hangout.start();
                     });
 
                 gapi.hangout.onTopicChanged.add(
                     function(e) {
                         $rootScope.$broadcast('hangout.topic', e);
+                        $log.info(angular.toJSON(e));
                     });
             },
             start: function() {
@@ -80,7 +90,7 @@
                         'reference': gapi.hangout.av.effects.ScaleReference.WIDTH
                     }
                 });
-                overlay.setPosition(-0.5, 0.5);
+                overlay.setPosition(-0.4, -0.4);
                 overlay.setVisible(true);
 
                 if(overlays['time']) {
@@ -101,6 +111,25 @@
                     overlays['logo'].setPosition(0.5, 0.45);
                 }
                 overlays['logo'].setVisible(show);
+            },
+            sendHeartbeat: function(file, time, project) {
+                return $http({
+                    method: 'POST',
+                    url: API_URL,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Basic ' + btoa(Hangout.data.apiKey)
+                    },
+                    data: JSON.stringify({
+                        time: time/1000,
+                        file: file,
+                        project: project,
+                        language: Hangout.data.language,
+                        is_write: Hangout.data.is_write,
+                        lines: Hangout.data.lines,
+                        plugin: PLUGIN
+                    })
+                });
             }
         };
 
@@ -136,9 +165,13 @@
             Hangout.showLogo(newValue);
         });
 
-        $scope.sendHeartbeat = function(file, time, project, language, isWrite, lines) {
-            // TODO
-        };
+        $scope.$watch('apiKey', function(newValue, oldValue) {
+            Hangout.data.apiKey = newValue;
+        });
+
+        $scope.$watch('project', function(newValue, oldValue) {
+            Hangout.data.project = newValue;
+        });
     });
 
 })();
