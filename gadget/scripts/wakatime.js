@@ -50,8 +50,7 @@
                 gapi.hangout.onParticipantsChanged.add(
                     function(evt) {
                         $log.info(evt);
-                        $rootScope.$broadcast('hangout.participant', evt);
-                        $log.info(angular.toJSON(evt));
+                        $rootScope.$broadcast('hangout.participants', evt);
                     });
 
                 gapi.hangout.onair.onBroadcastingChanged.add(
@@ -59,7 +58,6 @@
                         $log.info(evt);
                         Hangout.start();
                         $rootScope.$broadcast('hangout.broadcasting', evt);
-                        $log.info(angular.toJSON(evt));
                     });
 
                 gapi.hangout.onTopicChanged.add(
@@ -67,7 +65,6 @@
                         $log.info(evt);
                         Hangout.start();
                         $rootScope.$broadcast('hangout.topic', evt);
-                        $log.info(angular.toJSON(evt));
                     });
 
                 this.data.initialized = true;
@@ -81,16 +78,19 @@
                         time += 5000;
                         Hangout.setTime(moment(time).format('HH:mm:ss'));
                     }, 5000)
+                    $rootScope.$broadcast('timer.started');
                 }
             },
             stop: function() {
                 if(watch) {
                     $interval.cancel(watch);
                     watch = undefined;
+                    $rootScope.$broadcast('timer.stopped');
                 }
             },
             reset: function() {
                 time = 0;
+                $rootScope.$broadcast('timer.reset');
             },
             setTime: function(time) {
                 var overlay = gapi.hangout.av.effects.createImageResource(createTextOverlay(time));
@@ -164,6 +164,7 @@
         $scope.edit = true;
         $scope.running = false;
         $scope.logo = LOGO;
+        $scope.queue = [];
 
         $scope.start = function() {
             Hangout.start();
@@ -178,6 +179,22 @@
         $scope.reset = function() {
             Hangout.reset();
         };
+
+        $scope.$on('hangout.participants', function(evt) {
+            $scope.queue.push(evt);
+        });
+
+        $scope.$on('timer.started', function() {
+            $scope.running = true;
+        });
+
+        $scope.$on('timer.stopped', function() {
+            $scope.running = false;
+        });
+
+        $scope.$on('timer.reset', function() {
+            // TODO
+        });
 
         $scope.$watch('showLogo', function(newValue, oldValue) {
             Hangout.showLogo(newValue);
