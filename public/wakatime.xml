@@ -178,7 +178,7 @@
                         'reference': gapi.hangout.av.effects.ScaleReference.WIDTH
                     }
                 });
-                overlay.setPosition(-0.4, -0.4);
+                overlay.setPosition(-0.4, -0.2);
                 overlay.setVisible(true);
 
                 if(overlays['time']) {
@@ -196,7 +196,7 @@
                             'reference': gapi.hangout.av.effects.ScaleReference.WIDTH
                         }
                     });
-                    overlays['logo'].setPosition(-0.4, -0.2);
+                    overlays['logo'].setPosition(-0.4, -0.4);
                 }
                 overlays['logo'].setVisible(show);
             },
