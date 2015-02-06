@@ -35,6 +35,8 @@
         $scope.sendHeartbeat = function(file, time, project, language, isWrite, lines) {
             // TODO
         };
+    }).run(function($rootScope) {
+        // you can inject any instance here
     }).factory('Hangout', function ($rootScope, $interval) {
         var overlays = {};
         var watch;
