@@ -19,7 +19,11 @@
         </div>
     </div>
     <div class="form-group">
-        <p>{{queue}}</p>
+        <table class="table.table-condensed">
+            <tr ng-repeat="entry in queue">
+                <td>{{entry}}</td>
+            </tr>
+        </table>
     </div>
 </form>
 

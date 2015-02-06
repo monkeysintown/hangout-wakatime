@@ -20,7 +20,7 @@
     <Content type="html"><![CDATA[
 <html ng-app="wakatime">
 <head>
-<link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/css/bootstrap.min.css" />
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/css/bootstrap.min.css" />
 <link href="wakatime.css" />
 <!-- inject:css -->
 <!-- endinject -->

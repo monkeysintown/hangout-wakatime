@@ -76,7 +76,7 @@
                         time += 5000;
                         Hangout.setTime(moment.utc(time).format('HH:mm:ss'));
                         $rootScope.$broadcast('timer', time);
-                    }, 5000)
+                    }, 5000);
                     $rootScope.$broadcast('timer.started', time);
                 }
             },
@@ -180,7 +180,30 @@
         };
 
         $scope.$on('hangout.participants', function(evt) {
-            $scope.queue.push(evt);
+            // TODO: do something useful
+            try {
+                $scope.queue.push(evt);
+            } catch (err) {
+
+            }
+        });
+
+        $scope.$on('hangout.topic', function(evt) {
+            // TODO: do something useful
+            try {
+                $scope.queue.push(evt);
+            } catch (err) {
+
+            }
+        });
+
+        $scope.$on('hangout.broadcasting', function(evt) {
+            // TODO: do something useful
+            try {
+                $scope.queue.push(evt);
+            } catch (err) {
+
+            }
         });
 
         $scope.$on('timer.started', function() {

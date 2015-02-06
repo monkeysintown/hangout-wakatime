@@ -20,7 +20,7 @@
     <Content type="html"><![CDATA[
 <html ng-app="wakatime">
 <head>
-<link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/css/bootstrap.min.css" />
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/css/bootstrap.min.css" />
 <style>
 
 </style>
@@ -56,7 +56,11 @@
         </div>
     </div>
     <div class="form-group">
-        <p>{{queue}}</p>
+        <table class="table.table-condensed">
+            <tr ng-repeat="entry in queue">
+                <td>{{entry}}</td>
+            </tr>
+        </table>
     </div>
 </form>
 
@@ -142,7 +146,7 @@
                         time += 5000;
                         Hangout.setTime(moment.utc(time).format('HH:mm:ss'));
                         $rootScope.$broadcast('timer', time);
-                    }, 5000)
+                    }, 5000);
                     $rootScope.$broadcast('timer.started', time);
                 }
             },
@@ -246,7 +250,30 @@
         };
 
         $scope.$on('hangout.participants', function(evt) {
-            $scope.queue.push(evt);
+            // TODO: do something useful
+            try {
+                $scope.queue.push(evt);
+            } catch (err) {
+
+            }
+        });
+
+        $scope.$on('hangout.topic', function(evt) {
+            // TODO: do something useful
+            try {
+                $scope.queue.push(evt);
+            } catch (err) {
+
+            }
+        });
+
+        $scope.$on('hangout.broadcasting', function(evt) {
+            // TODO: do something useful
+            try {
+                $scope.queue.push(evt);
+            } catch (err) {
+
+            }
         });
 
         $scope.$on('timer.started', function() {
